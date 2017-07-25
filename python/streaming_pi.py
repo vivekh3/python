@@ -43,4 +43,4 @@ try:
 finally:
     connection.close()
     client_socket.close()
-
+The server script shoul

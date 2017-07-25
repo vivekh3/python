@@ -3,6 +3,7 @@ import socket
 import struct
 import time
 import picamera
+from imutils.video.pivideostream import PiVideoStream
 
 # Connect a client socket to my_server:8000 (change my_server to the
 # hostname of your server)
@@ -15,7 +16,7 @@ try:
     camera = picamera.PiCamera()
     camera.resolution = (320, 240)
     # Start a preview and let the camera warm up for 2 seconds
-    camera.start_preview()
+    vs=PiVideoStream().start()
     time.sleep(2)
 
     # Note the start time and construct a stream to hold image data
@@ -24,14 +25,15 @@ try:
     # our protocol simple)
     start = time.time()
     stream = io.BytesIO()
-    for foo in camera.capture_continuous(stream, 'jpeg'):
+    stream=vs.read()
+    While True:
         # Write the length of the capture to the stream and flush to
         # ensure it actually gets sent
         connection.write(struct.pack('<L', stream.tell()))
         connection.flush()
         # Rewind the stream and send the image data over the wire
         stream.seek(0)
-        connection.write(stream.read())
+        connection.write(vsstream.read())
         # If we've been capturing for more than 30 seconds, quit
         if time.time() - start > 30:
             break
@@ -43,4 +45,4 @@ try:
 finally:
     connection.close()
     client_socket.close()
-
+The server script shoul
