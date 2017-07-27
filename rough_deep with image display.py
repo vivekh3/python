@@ -43,7 +43,7 @@ sess=tf.InteractiveSession()
 #Placeholders, note that x, which is an image, is a 28x28 matrix, it has been 'flattened' to a 784 column row, similarly y_ is a 10 column matrix (one_hot)
 x=tf.placeholder(tf.float32, shape=[None,784])
 y_=tf.placeholder(tf.float32, shape=[None,10])
-output=tf.placeholder(tf.float32, shape=[1,10])
+x_test=tf.placeholder(tf.float32, shape=[None,784])
 #initializing the weight and bias variables
 
 W=tf.Variable(tf.zeros([784,10]))
@@ -136,9 +136,9 @@ sess.run(tf.global_variables_initializer())
 # And the iterations..! Note that the system is printing the training accuracy after every 100 cycles, and is taking 50 images in one batch
 # the system then finally prints out the test accuracy at the end. Another thing to note is the 
 
-for i in range(10):
+for i in range(10000):
   batch = mnist.train.next_batch(50)
-  if i%2 == 0:
+  if i%200 == 0:
     train_accuracy = accuracy.eval(feed_dict={
         x:batch[0], y_: batch[1], keep_prob: 1.0})
     print("step %d, training accuracy %g"%(i, train_accuracy))
@@ -147,25 +147,29 @@ for i in range(10):
 print("test accuracy %g"%accuracy.eval(feed_dict={
     x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0}))
 
-x_test=tf.placeholder(tf.float32, shape=[None,784])
-x_test=mnist.test.images[10]
-print(accuracy.eval(feed_dict={
-    x: x_test}))
 
-"""
-x_image_test=tf.reshape(mnist.test.images[10],[-1,28,28,1])
-h_conv1=tf.nn.relu(conv2d(x_image_test,W_conv1)+b_conv1)
-h_pool1=max_pool_2x2(h_conv1)
-h_conv2=tf.nn.relu(conv2d(h_pool1,W_conv2)+b_conv2)
-h_pool2=max_pool_2x2(h_conv2)
-h_pool2_flat = tf.reshape(h_pool2, [-1, 7*7*64])
-h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
-keep_prob = tf.placeholder(tf.float32)
-h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
-W_fc2 = weight_variable([1024, 10])
-b_fc2 = bias_variable([10])
+with sess.as_default():
+    x_test=mnist.test.images[10]
+    x_test=np.reshape(x_test,(-1,784))
+    #x_test=np.reshape(x_test,(28,28))
+    #x_image_test=tf.reshape(mnist.test.images[10],[-1,28,28,1])
+    print(y_conv.eval(feed_dict={x:x_test,keep_prob:1}))
+    
+"""with sess.as_default():
+    x_image_test=tf.reshape(mnist.test.images[10],[-1,28,28,1])
+    h_conv1=tf.nn.relu(conv2d(x_image_test,W_conv1)+b_conv1)
+    h_pool1=max_pool_2x2(h_conv1)
+    h_conv2=tf.nn.relu(conv2d(h_pool1,W_conv2)+b_conv2)
+    h_pool2=max_pool_2x2(h_conv2)
+    h_pool2_flat = tf.reshape(h_pool2, [-1, 7*7*64])
+    h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
+    keep_prob = tf.placeholder(tf.float32)
+    h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
+    W_fc2 = weight_variable([1024, 10])
+    b_fc2 = bias_variable([10])
 
-y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
+    y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
+    print (sess.run(y_conv))
 correct_prediction_test = tf.equal(tf.argmax(y_conv,1), tf.argmax(mnist.test.labels[10],1))
 tf.Print(correct_prediction_test)
 accuracy_test = tf.reduce_mean(tf.cast(correct_prediction_test, tf.float32))

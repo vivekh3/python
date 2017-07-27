@@ -8,5 +8,6 @@ with sess.as_default():
    tu.eval()  # runs one step
    ut.eval()  # runs one step
    sess.run([tu, ut])  # evaluates both tensors in a single step
+   print(sess.run(tu))
 
    
