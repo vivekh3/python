@@ -117,6 +117,7 @@ b_fc2 = bias_variable([10])
 
 y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
 
+
 # now for the reduction of the cross entropy using the adam optimizer
 
 cross_entropy = tf.reduce_mean(
@@ -138,7 +139,7 @@ sess.run(tf.global_variables_initializer())
 
 for i in range(10000):
   batch = mnist.train.next_batch(50)
-  if i%200 == 0:
+  if i%500 == 0:
     train_accuracy = accuracy.eval(feed_dict={
         x:batch[0], y_: batch[1], keep_prob: 1.0})
     print("step %d, training accuracy %g"%(i, train_accuracy))
@@ -151,9 +152,8 @@ print("test accuracy %g"%accuracy.eval(feed_dict={
 with sess.as_default():
     x_test=mnist.test.images[10]
     x_test=np.reshape(x_test,(-1,784))
-    #x_test=np.reshape(x_test,(28,28))
-    #x_image_test=tf.reshape(mnist.test.images[10],[-1,28,28,1])
     print(y_conv.eval(feed_dict={x:x_test,keep_prob:1}))
+    print (accuracy.eval(feed_dict={x: np.reshape(mnist.test.images[10],(-1,784)), y_: np.reshape(mnist.test.labels[10],(-1,10)), keep_prob: 1.0}))
     
 """with sess.as_default():
     x_image_test=tf.reshape(mnist.test.images[10],[-1,28,28,1])
