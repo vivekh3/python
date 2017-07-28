@@ -139,7 +139,7 @@ sess.run(tf.global_variables_initializer())
 
 for i in range(200):
   batch = mnist.train.next_batch(50)
-  if i%20 == 0:
+  if i%50 == 0:
     train_accuracy = accuracy.eval(feed_dict={
         x:batch[0], y_: batch[1], keep_prob: 1.0})
     print("step %d, training accuracy %g"%(i, train_accuracy))
@@ -152,9 +152,10 @@ print("test accuracy %g"%accuracy.eval(feed_dict={
 with sess.as_default():
     x_test=mnist.test.images[12]
     x_test=np.reshape(x_test,(-1,784))
-    d=tf.nn.softmax(y_conv,dim=-1)
-    k=y_conv.eval(feed_dict={x:x_test,keep_prob:1})
+    #d=tf.nn.softmax(y_conv,dim=-1)
     
+    k=y_conv.eval(feed_dict={x:x_test,keep_prob:1})
+    d=tf.nn.softmax(k,dim=-1)
     print(sess.run(d,feed_dict={y_conv:k}))
     print("This is what the machine sees")
     print(sess.run(tf.round(sess.run(d,feed_dict={y_conv:k}))))
