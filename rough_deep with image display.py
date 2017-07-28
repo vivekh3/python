@@ -137,9 +137,9 @@ sess.run(tf.global_variables_initializer())
 # And the iterations..! Note that the system is printing the training accuracy after every 100 cycles, and is taking 50 images in one batch
 # the system then finally prints out the test accuracy at the end. Another thing to note is the 
 
-for i in range(10000):
+for i in range(100):
   batch = mnist.train.next_batch(50)
-  if i%500 == 0:
+  if i%25 == 0:
     train_accuracy = accuracy.eval(feed_dict={
         x:batch[0], y_: batch[1], keep_prob: 1.0})
     print("step %d, training accuracy %g"%(i, train_accuracy))
@@ -152,7 +152,11 @@ print("test accuracy %g"%accuracy.eval(feed_dict={
 with sess.as_default():
     x_test=mnist.test.images[10]
     x_test=np.reshape(x_test,(-1,784))
-    print(y_conv.eval(feed_dict={x:x_test,keep_prob:1}))
+    d=tf.nn.softmax(y_conv,dim=-1)
+    k=y_conv.eval(feed_dict={x:x_test,keep_prob:1})
+    
+    print(sess.run(d,feed_dict={y_conv:k}))
+    print(sess.run(tf.round(sess.run(d,feed_dict={y_conv:k}))))
     print (accuracy.eval(feed_dict={x: np.reshape(mnist.test.images[10],(-1,784)), y_: np.reshape(mnist.test.labels[10],(-1,10)), keep_prob: 1.0}))
     
 """with sess.as_default():
