@@ -150,33 +150,15 @@ print("test accuracy %g"%accuracy.eval(feed_dict={
 
 
 with sess.as_default():
-    x_test=mnist.test.images[10]
+    x_test=mnist.test.images[11]
     x_test=np.reshape(x_test,(-1,784))
     d=tf.nn.softmax(y_conv,dim=-1)
     k=y_conv.eval(feed_dict={x:x_test,keep_prob:1})
     
     print(sess.run(d,feed_dict={y_conv:k}))
     print(sess.run(tf.round(sess.run(d,feed_dict={y_conv:k}))))
-    print (accuracy.eval(feed_dict={x: np.reshape(mnist.test.images[10],(-1,784)), y_: np.reshape(mnist.test.labels[10],(-1,10)), keep_prob: 1.0}))
+    print ("This is a :%d"%sess.run(tf.arg_max(tf.round(sess.run(d,feed_dict={y_conv:k})),1)))
+    print (accuracy.eval(feed_dict={x: np.reshape(mnist.test.images[11],(-1,784)), y_: np.reshape(mnist.test.labels[10],(-1,10)), keep_prob: 1.0}))
     
-"""with sess.as_default():
-    x_image_test=tf.reshape(mnist.test.images[10],[-1,28,28,1])
-    h_conv1=tf.nn.relu(conv2d(x_image_test,W_conv1)+b_conv1)
-    h_pool1=max_pool_2x2(h_conv1)
-    h_conv2=tf.nn.relu(conv2d(h_pool1,W_conv2)+b_conv2)
-    h_pool2=max_pool_2x2(h_conv2)
-    h_pool2_flat = tf.reshape(h_pool2, [-1, 7*7*64])
-    h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
-    keep_prob = tf.placeholder(tf.float32)
-    h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
-    W_fc2 = weight_variable([1024, 10])
-    b_fc2 = bias_variable([10])
-
-    y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
-    print (sess.run(y_conv))
-correct_prediction_test = tf.equal(tf.argmax(y_conv,1), tf.argmax(mnist.test.labels[10],1))
-tf.Print(correct_prediction_test)
-accuracy_test = tf.reduce_mean(tf.cast(correct_prediction_test, tf.float32))
-"""
 
 
