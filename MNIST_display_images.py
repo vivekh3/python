@@ -4,7 +4,7 @@ import numpy as np
 from msvcrt import getch
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
-counter=0
+
 for i in range(1,100):
     input("Please press a key to continue..")
         

@@ -37,6 +37,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
 # importing tensorflow as tf
 import tensorflow as tf
+import cv2
 
 sess=tf.InteractiveSession()
 
@@ -139,7 +140,7 @@ sess.run(tf.global_variables_initializer())
 
 for i in range(200):
   batch = mnist.train.next_batch(50)
-  if i%50 == 0:
+  if i%20 == 0:
     train_accuracy = accuracy.eval(feed_dict={
         x:batch[0], y_: batch[1], keep_prob: 1.0})
     print("step %d, training accuracy %g"%(i, train_accuracy))
@@ -150,18 +151,23 @@ print("test accuracy %g"%accuracy.eval(feed_dict={
 
 
 with sess.as_default():
-    x_test=mnist.test.images[12]
-    x_test=np.reshape(x_test,(-1,784))
-    #d=tf.nn.softmax(y_conv,dim=-1)
-    
-    k=y_conv.eval(feed_dict={x:x_test,keep_prob:1})
-    d=tf.nn.softmax(k,dim=-1)
-    print(sess.run(d,feed_dict={y_conv:k}))
-    print("This is what the machine sees")
-    print(sess.run(tf.round(sess.run(d,feed_dict={y_conv:k}))))
-    print("This is what it is actually")
-    print(mnist.test.labels[12])
-    print ("This is a: %d"%sess.run(tf.arg_max(tf.round(sess.run(d,feed_dict={y_conv:k})),1)))
+    for i in range(1,10):
+        x_test=mnist.test.images[i]
+        x_test=np.reshape(x_test,(-1,784))
+      
+        k=y_conv.eval(feed_dict={x:x_test,keep_prob:1})
+        d=tf.nn.softmax(k,dim=-1)
+        print(sess.run(d,feed_dict={y_conv:k}))
+        print("This is what the machine sees")
+        print(sess.run(tf.round(sess.run(d,feed_dict={y_conv:k}))))
+        print("This is what it is actually")
+        print(mnist.test.labels[i])
+        image_check=np.array(x_test,dtype='float32')
+        image_check=image_check.reshape((28,28))
+        cv2.imshow('check',image_check)
+        print ("This is a: %d"%sess.run(tf.arg_max(tf.round(sess.run(d,feed_dict={y_conv:k})),1)))
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
    # print (accuracy.eval(feed_dict={x: np.reshape(mnist.test.images[11],(-1,784)), y_: np.reshape(mnist.test.labels[10],(-1,10)), keep_prob: 1.0}))
     
 
