@@ -1,6 +1,6 @@
 ###########################################################################################################################################
 #This code is from the tutorial for Tensorflow - deep MNIST from experts. This line gives full credit to whoever wrote this. This is not my
-#code. I have only attempted to put comments around the code for not-so-experts
+#code. I have only attempted to enhance the code by adding comments and a section to display final images
 ###########################################################################################################################################
 
 # This set of imports is to ensure that the code runs with older versions of Python.
@@ -24,7 +24,9 @@ The Plan:
 7. Apply the convolution and max pooling blocks - 2 in this case
 8. Initiate a fully connected block by getting new values for W and b
 9. Create a readout layer
-10. 
+10. Calculate the cross entropy, essentially the error between output and actual output
+11. Calculate the accuracy level
+12. Run the iterations over the training examples
     
 
 """
@@ -138,9 +140,9 @@ sess.run(tf.global_variables_initializer())
 # And the iterations..! Note that the system is printing the training accuracy after every 100 cycles, and is taking 50 images in one batch
 # the system then finally prints out the test accuracy at the end. Another thing to note is the 
 
-for i in range(200):
+for i in range(20000):
   batch = mnist.train.next_batch(50)
-  if i%20 == 0:
+  if i%2000 == 0:
     train_accuracy = accuracy.eval(feed_dict={
         x:batch[0], y_: batch[1], keep_prob: 1.0})
     print("step %d, training accuracy %g"%(i, train_accuracy))
@@ -149,6 +151,7 @@ for i in range(200):
 print("test accuracy %g"%accuracy.eval(feed_dict={
     x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0}))
 
+# Displaying images one by one 10 times. 
 
 with sess.as_default():
     for i in range(1,10):
