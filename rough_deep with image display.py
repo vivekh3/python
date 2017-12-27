@@ -140,7 +140,7 @@ sess.run(tf.global_variables_initializer())
 # And the iterations..! Note that the system is printing the training accuracy after every 100 cycles, and is taking 50 images in one batch
 # the system then finally prints out the test accuracy at the end. Another thing to note is the 
 
-for i in range(20000):
+for i in range(200):
   batch = mnist.train.next_batch(50)
   if i%2000 == 0:
     train_accuracy = accuracy.eval(feed_dict={
