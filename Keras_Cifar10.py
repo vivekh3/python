@@ -31,20 +31,27 @@ y_train = keras.utils.to_categorical(y_train, num_classes)
 y_test = keras.utils.to_categorical(y_test, num_classes)
 
 model = Sequential()
+# start with a 32x32 image, and 32 filters, 3x3 kernel
 model.add(Conv2D(32, (3, 3), padding='same',
                  input_shape=x_train.shape[1:]))
 model.add(Activation('relu'))
+# At this stage, the image is reduced to (32-3)+1x(32-3)+1=30x30x32 volume
 model.add(Conv2D(32, (3, 3)))
+# volume = 30-3+1=28x28x32
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
+# volume = 14x14x32
 
 model.add(Conv2D(64, (3, 3), padding='same'))
 model.add(Activation('relu'))
+# volume = 12x12x64 (14-3+1)
 model.add(Conv2D(64, (3, 3)))
 model.add(Activation('relu'))
+# volume = 10x10x64
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
+# volume= 5x5x64
 
 model.add(Flatten())
 model.add(Dense(512))
