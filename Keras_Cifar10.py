@@ -11,15 +11,16 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 import os
+import time
 
 batch_size = 32
 num_classes = 10
-epochs = 3
+epochs = 10
 data_augmentation = False
 num_predictions = 20
 save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'keras_cifar10_trained_model.h5'
-
+start_time=time.time()
 # The data, shuffled and split between train and test sets:
 (x_train, y_train), (x_test, y_test) = cifar10.load_data()
 print('x_train shape:', x_train.shape)
@@ -105,8 +106,9 @@ if not os.path.isdir(save_dir):
 model_path = os.path.join(save_dir, model_name)
 model.save(model_path)
 print('Saved trained model at %s ' % model_path)
-
+end_time=time.time()
+print("The operation took " + str(end_time-start_time))
 # Score trained model.
-scores = model.evaluate(x_test, y_test, verbose=1)
-print('Test loss:', scores[0])
-print('Test accuracy:', scores[1])
+#scores = model.evaluate(x_test, y_test, verbose=1)
+#print('Test loss:', scores[0])
+#print('Test accuracy:', scores[1])
