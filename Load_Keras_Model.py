@@ -15,6 +15,6 @@ print (i)
 print(x_test.shape[0],'Test Samples')
 print(x_test[i].shape)
 cv2.imshow('Image 1',x_test[i])
-
+y=model.predict(x_test[i])
 
 
