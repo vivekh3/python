@@ -34,7 +34,7 @@ model=load_model(os.path.join(load_dir,'keras_cifar10_trained_model.h5'))
 (x_train, y_train), (x_test, y_test) = cifar10.load_data()
 # Run this test for 5 iterations
 
-for p in range(1,6):
+for p in range(1,11):
 
 # Picking up a random image
     i=np.random.randint(1,10000)
@@ -68,5 +68,5 @@ for p in range(1,6):
     print("This is what it actually is: "+ class_names[np.asscalar(y_test[i])])
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-
+    
 
