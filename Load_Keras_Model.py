@@ -49,6 +49,7 @@ for p in range(1,6):
     y=np.expand_dims(x_test[i],axis=0)
 
 # Now the predictions
+
     predictions=model.predict(y)
 # Check which element of the predictions matrix is the highest.
 #This gives you the class with the highest probability
