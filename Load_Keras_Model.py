@@ -1,9 +1,13 @@
 from keras.models import load_model
 from keras.datasets import cifar10
+import matplotlib.pyplot as plt
+import matplotlib.image as mpt
 import os
 import numpy as np
 import cv2
 import pickle
+
+plt.rcParams['toolbar']='None'
 
 # Setting up the path for the label names.
 #You can uncomment it or use it if you like,
@@ -34,14 +38,18 @@ model=load_model(os.path.join(load_dir,'keras_cifar10_trained_model.h5'))
 (x_train, y_train), (x_test, y_test) = cifar10.load_data()
 # Run this test for 5 iterations
 
-for p in range(1,11):
+for p in range(1,3):
 
 # Picking up a random image
     i=np.random.randint(1,10000)
     # Printing the index of the image from the 10K samples
     print (i)
 # Display the image that we picked
-    cv2.imshow('Image 1',x_test[i])
+    mpt.imsave("Test.jpg",x_test[i])
+    imgplot=plt.imshow(mpt.imread("Test.jpg"))
+    plt.axis('off')
+    #plt.show()
+    #cv2.imshow('Image',x_test[i])
 # Now Keras.predict expects the input to be a 4D tensor.
 # But our image is a 3D tensor of the shape(32,32,3).
 # We will augment the input matrix by adding one more dimension
@@ -63,9 +71,14 @@ for p in range(1,11):
 # Printing the class names, uncomment the line below if needed
 #    print (class_names)
 # And now the actual test
-    print("This is what the computer thinks this is: " + class_names[check])
+    str_comp_thinks="This is what the computer thinks this is: " + str(class_names[check])
+    plt.text(2,33,str_comp_thinks)
+    str_actual="This is what it actually is: "+ class_names[np.asscalar(y_test[i])]
+    plt.text(2,35,str_actual)
+    #print("This is what the computer thinks this is: " + class_names[check])
 # Validating the test
-    print("This is what it actually is: "+ class_names[np.asscalar(y_test[i])])
+   # print("This is what it actually is: "+ class_names[np.asscalar(y_test[i])])
+    plt.show()
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     
