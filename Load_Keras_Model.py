@@ -45,9 +45,11 @@ for p in range(1,3):
     # Printing the index of the image from the 10K samples
     print (i)
 # Display the image that we picked
+    plt.subplot(211)
     mpt.imsave("Test.jpg",x_test[i])
-    imgplot=plt.imshow(mpt.imread("Test.jpg"))
-    plt.axis('off')
+    imgplot=plt.imshow(mpt.imread("Test.jpg"),aspect=1)
+    #plt.axis('off')
+
     #plt.show()
     #cv2.imshow('Image',x_test[i])
 # Now Keras.predict expects the input to be a 4D tensor.
@@ -72,9 +74,9 @@ for p in range(1,3):
 #    print (class_names)
 # And now the actual test
     str_comp_thinks="This is what the computer thinks this is: " + str(class_names[check])
-    plt.text(2,33,str_comp_thinks)
+    plt.text(-10,40,str_comp_thinks)
     str_actual="This is what it actually is: "+ class_names[np.asscalar(y_test[i])]
-    plt.text(2,35,str_actual)
+    plt.text(-10,45,str_actual)
     #print("This is what the computer thinks this is: " + class_names[check])
 # Validating the test
    # print("This is what it actually is: "+ class_names[np.asscalar(y_test[i])])
