@@ -10,8 +10,8 @@ import time
 start_time=time.time()
 batch_size = 32
 num_classes = 10
-epochs = 200
-data_augmentation = True
+epochs = 50
+data_augmentation = False
 num_predictions = 20
 save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'keras_cifar10_pure_cnn_trained_model.h5'
@@ -111,4 +111,8 @@ print("The operation took " + str(end_time-start_time))
 
 end_time=time.time()
 print("Operation took" +str(end_time-start_time))
+# Score trained model.
+scores = model.evaluate(x_test, y_test, verbose=1)
+print('Test loss:', scores[0])
+print('Test accuracy:', scores[1])
 
