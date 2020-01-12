@@ -6,7 +6,7 @@ import numpy as np
 # Start a socket listening for connections on 0.0.0.0:8000 (0.0.0.0 means
 # all interfaces)
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind(('', 5000))
+server_socket.bind(('', 8000))
 server_socket.listen(0)
 
 # Accept a single connection and make a file-like object out of it
