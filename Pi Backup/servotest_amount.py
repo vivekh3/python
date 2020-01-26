@@ -24,25 +24,22 @@ def set_servo_angle(angle):
 
 pwm.set_pwm_freq(60)
 print('Moving')
-for i in range(0,10):
-    pwm.set_pwm(8,0,set_servo_angle(servo_min))
-    time.sleep(1)
-    pwm.set_pwm(8,0,set_servo_angle(servo_min+10))
-    time.sleep(1)
-    pwm.set_pwm(8,0,set_servo_angle(servo_min+20))
-    time.sleep(1)
-    pwm.set_pwm(8,0,set_servo_angle(servo_min+30))
-    time.sleep(1)
-'''for angle in range(150,220,5):
+#while True:
+ #   pwm.set_pwm(0,0,servo_min)
+  #  time.sleep(1)
+   # pwm.set_pwm(0,0,servo_max)
+    #time.sleep(1)
+
+for angle in range(150,200,5):
     pwm.set_pwm(8,0,set_servo_angle(angle))
     print("going")
     time.sleep(.2)
 
 
-for angle in range(220,150,-5):
+for angle in range(200,150,-5):
     pwm.set_pwm(8,0,set_servo_angle(angle))
     print("coming back")
     time.sleep(.2)
-   ''' 
+    
     
     

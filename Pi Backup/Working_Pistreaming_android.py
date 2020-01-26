@@ -4,23 +4,14 @@ import struct
 import time
 import picamera
 
-listensocket=socket.socket()
-Port=5004
-maxConnections=999
-IP=socket.gethostname()
-print(IP)
-listensocket.bind(('',Port))
-listensocket.listen(maxConnections)
-print('Server started at '+IP+' on Port'+str(Port))
-(clientsocket,address)=listensocket.accept()
-print("New Connection Made: "+str(address))
-#listensocket.close()
-running=True
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client_socket.bind(('',5000))
+client,address=client_socket.accept()
+print("Client IP: "+client)
 
-                  
-#client_socket.connect(('192.168.0.131', 8000))
-connection = clientsocket.makefile('wb')
-
+                   
+#client_socket.connect(('192.168.0.126', 8000))
+connection = client_socket.makefile('wb')
 try:
     with picamera.PiCamera() as camera:
         camera.resolution = (160, 120)
@@ -32,30 +23,14 @@ try:
         for foo in camera.capture_continuous(stream, 'jpeg',
                                              use_video_port=True):
             connection.write(struct.pack('<L', stream.tell()))
-            #print(stream.tell())
             connection.flush()
             stream.seek(0)
             connection.write(stream.read())
             if time.time() - start > 30:
                 break
             stream.seek(0)
-            #message=clientsocket.recv(1024).decode()
-            #if message!='':
-            #    print(message)
             stream.truncate()
-            #message=clientsocket.recv(1024).decode()
-            #if message!='':
-            #    print(message)
     connection.write(struct.pack('<L', 0))
-
-    
-
-    #while True:
-    #   time.sleep(1)
-    #message=clientsocket.recv(1024).decode()
-    
-            
-    #break
 finally:
     connection.close()
-    #client_socket.close()
+    client_socket.close()
